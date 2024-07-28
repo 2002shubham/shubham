@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('sendemail',[EmailController::class,'viewEmailPage']);
+// Route::post('sendemail',[EmailController::class,'sendEmail']);
+
+Route::controller(EmailController::class)->group(function(){
+    Route::get('sendemail','viewEmailPage');
+    Route::post('sendemail','sendEmail');
+
+    // Send Email With Attachment
+    Route::get('email','email');
+    Route::post('email','send');
 });

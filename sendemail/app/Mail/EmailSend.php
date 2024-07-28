@@ -4,25 +4,27 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Attachment;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SendEmail extends Mailable
+class EmailSend extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $data;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public $data;
+    public $fileName;
+    public function __construct($data, $fileName)
     {
         $this->data = $data;
+        $this->fileName = $fileName;
     }
 
     /**
@@ -33,7 +35,7 @@ class SendEmail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Send Email',
+            subject: 'Email Send With Attachments',
         );
     }
 
@@ -54,8 +56,30 @@ class SendEmail extends Mailable
      *
      * @return array
      */
+
+    //  This code is only used when there are only one attachments send.
     public function attachments()
     {
-        return [];
+        $attachmment = [];
+        if($this->fileName){
+            $attachment=[
+                Attachment::frompath(public_path('Attachments').'/'.$this->fileName)
+            ];
+        }
+        return $attachment;
     }
+
+    // This code is only used when there are multiple attachments send.
+
+    // public function attachments()
+    // {
+    //     $attachments = [];
+
+    //     if ($this->fileName) {
+    //         foreach ($this->fileName as $file) {
+    //             $attachments[] = Attachment::fromPath(public_path('Attachments') . '/' . $file);
+    //         }
+    //     }
+    //     return $attachments;
+    // }
 }
