@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <main class="container">
+    <main class="containers">
         <div class="row p-5">
             <div class="col-lg-12 col-12 mt-3 mb-3">
                 <div class="card">
